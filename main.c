@@ -58,7 +58,7 @@ void blur(v4* input_data, v4* input_buffer, int w, int h, int R) {
   v4 (*data)   [w] = (void*) input_data;
   v4 (*buffer) [h] = (void*) input_buffer; // Transposed
 
-	#pragma omp parallel for simd
+  #pragma omp parallel for simd
   for (int y = 0; y < h; y++) {
     v4 sum = {0};
     int x;
@@ -83,7 +83,7 @@ void blur(v4* input_data, v4* input_buffer, int w, int h, int R) {
     }
   }
 
-	#pragma omp parallel for simd
+  #pragma omp parallel for simd
   for (int x = 0; x < w; x++) {
     v4 sum = {0};
     int y;
@@ -152,7 +152,7 @@ int main(int count, char** arguments) {
   int w, h;
   v3* image_data = read_image(count > 1 ? "data/flower.ppm" : 0, &w, &h);
 
-	int kernels[4] = {2, 3, 5, 8};
+  int kernels[4] = {2, 3, 5, 8};
   v4* memory = malloc(8 * w * h * sizeof(v4));
   v4* data[4];
   v4* buffer[4];
@@ -170,13 +170,13 @@ int main(int count, char** arguments) {
   memcpy(data[3], data[0], w * h * sizeof(v4));
 
   #pragma omp parallel for simd
-	for (int i = 0; i < 4; i++) {
-		blur(data[i], buffer[i], w, h, kernels[i]);
-		blur(data[i], buffer[i], w, h, kernels[i]);
-		blur(data[i], buffer[i], w, h, kernels[i]);
-		blur(data[i], buffer[i], w, h, kernels[i]);
-		blur(data[i], buffer[i], w, h, kernels[i]);
-	}
+  for (int i = 0; i < 4; i++) {
+    blur(data[i], buffer[i], w, h, kernels[i]);
+    blur(data[i], buffer[i], w, h, kernels[i]);
+    blur(data[i], buffer[i], w, h, kernels[i]);
+    blur(data[i], buffer[i], w, h, kernels[i]);
+    blur(data[i], buffer[i], w, h, kernels[i]);
+  }
 
   v3* tiny   = difference(data[0], data[1], w, h);
   v3* small  = difference(data[1], data[2], w, h);
