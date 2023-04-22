@@ -149,8 +149,10 @@ static void check(char* path, char* correct_path) {
 }
 
 int main(int count, char** arguments) {
+  bool file_input = count > 0; // Otherwise use stdin and stdout
+
   int w, h;
-  v3* image_data = read_image(count > 1 ? "data/flower.ppm" : 0, &w, &h);
+  v3* image_data = read_image(file_input ? "data/flower.ppm" : 0, &w, &h);
 
   int kernels[4] = {2, 3, 5, 8};
   v4* memory = malloc(8 * w * h * sizeof(v4));
@@ -182,11 +184,11 @@ int main(int count, char** arguments) {
   v3* small  = difference(data[1], data[2], w, h);
   v3* medium = difference(data[2], data[3], w, h);
 
-  write_image(count > 1 ? "data/flower_tiny.ppm"   : 0, tiny,   w, h);
-  write_image(count > 1 ? "data/flower_small.ppm"  : 0, small,  w, h);
-  write_image(count > 1 ? "data/flower_medium.ppm" : 0, medium, w, h);
+  write_image(file_input ? "data/flower_tiny.ppm"   : 0, tiny,   w, h);
+  write_image(file_input ? "data/flower_small.ppm"  : 0, small,  w, h);
+  write_image(file_input ? "data/flower_medium.ppm" : 0, medium, w, h);
 
-  if (count > 1) {
+  if (file_input) {
     check("data/flower_tiny.ppm",   "data/flower_tiny_correct.ppm");
     check("data/flower_small.ppm",  "data/flower_small_correct.ppm");
     check("data/flower_medium.ppm", "data/flower_medium_correct.ppm");
