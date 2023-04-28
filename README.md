@@ -1,10 +1,10 @@
-# TDT4260-Climbing-Mont-Blanc-CMB
+# TDT4260 Climbing Mont Blanc (CMB)
 
 Runtime on CMB: **2.89s**
 
 I suggest using either Linux or WSL (Windows). To run the program and check the number of errors run `make`. To debug with GDB run `make debug`. To create a deliverable run `make zip`.
 
-It uses floats instead of double, performs a hozisontal blur to a transposed buffer, and then a vertical blur to the original buffer [w][h] -> [h][w] -> [w][h], it uses a sliding window using 4 for loops to handle edge cases, it uses SIMD operations for color, and OpenMP for the loops, and does some improvements to the many if statements in the difference function.
+It uses floats instead of double, performs a hozisontal blur to a transposed buffer, and then a vertical blur to the original buffer `data[w][h] -> horizontal blur -> buffer[h][w] -> vertical blur -> data[w][h]`, it uses a sliding window using 4 for loops to handle edge cases, it uses SIMD operations for color, and OpenMP for the loops, and does some improvements to the many if statements in the difference function.
 
 # Hand-in notes:
 
@@ -30,4 +30,4 @@ Then, we used OpenMP to parallelize the for loops. The algorithm does not overla
 We used the “#pragma omp parallel for simd” directive for each outer loop in blur, before the loop
 that computes blur for the four images, and for the outer loop (height) in the difference function. 
 This improved performance from 0.91s to 0.63s.
-``
+```
